@@ -447,7 +447,8 @@
 TODO:
 -string-ify
 -hook up JS
-
+-payment_method
+-ach_method
 
 					{% if page.accept_ach %}
 
@@ -710,6 +711,33 @@ TODO:
         return total;
     }
 
+    $(function() {
+/* Note: Not doing these for now as this is an ach-oly templateset, but putting this here for future reference
+        $('input[type=radio][name=payment_method]').change(function() {
+            if (this.value == 'ach') {
+                $('.ach_payment_options').show();
+                $('.cc_payment_options').hide();
+            } else {
+                $('.ach_payment_options').hide();
+                $('.cc_payment_options').show();
+            }
+        });
+        $('input[type=radio][name=ach_method]').change(function() {
+            if (this.value == 'account_number') {
+                $('.account_number_options').show();
+            } else {
+                $('.account_number_options').hide();
+            }
+        });
+*/        
+        $('#ak-ownership_type').change(function() {
+            if (this.value == 'business') {
+                $('#ak-fieldbox-business_name').show();
+            } else {
+                $('#ak-fieldbox-business_name').hide();
+            }
+        });
+    });
 
     /* Amount buttons */
     function highlight_selected_amount_button() {
