@@ -444,6 +444,11 @@
         <div class="ak-donate-area-step-3 form-style-labelabove ak-errs-below">
 					<h5 class="margin-bottom-normal">{% filter ak_text:"donate_payment_information" %}Payment Information{% endfilter %}</h5>
 
+TODO:
+-string-ify
+-hook up JS
+
+
 					{% if page.accept_ach %}
 
             <div class="input-text ak-input-type-user">
@@ -496,7 +501,7 @@
 								<input id="ak-business_name" type="text" name="business_name">
 						  </div></div> <!-- /ak-fieldbox-business_name /ak-err-below -->
 						
-						  <div id="ak-fieldbox-mandate"><div id="ak-mandate" class="text-small">By clicking "Donate", I authorize Braintree, a service of PayPal, on behalf of <span id="ak-client-name">{% filter ak_text:"org_name" %}{% client_name %}{% endfilter %}</span> (i) to verify my bank account information using bank information and consumer reports and (ii) to debit my bank account.
+						  <div id="ak-fieldbox-mandate"><div id="ak-mandate" class="text-small2">By clicking "Donate", I authorize Braintree, a service of PayPal, on behalf of <span id="ak-client-name">{% filter ak_text:"org_name" %}{% client_name %}{% endfilter %}</span> (i) to verify my bank account information using bank information and consumer reports and (ii) to debit my bank account.
 							</div></div> <!-- /ak-mandate /ak-fieldbox-mandate -->     
 						</div> <!-- /ach_payment_options -->
           {% endif %}
