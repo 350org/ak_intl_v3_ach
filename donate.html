@@ -477,8 +477,8 @@
 						    <div class="ak-err-below"><div id="ak-fieldbox-account_type" class="input-select ak-input-type-user">
 									<label for="ak-account_type">Account Type</label>
 									<select id="ak-account_type" type="text" name="account_type">
-									   <option value="checking">checking</option>
-									   <option value="savings">savings</option>
+									   <option value="checking">Checking</option>
+									   <option value="savings">Savings</option>
 									</select>
 						    </div></div> <!-- /ak-fieldbox-account_type /ak-err-below -->
 						  </div> <!-- /account_number_options -->
@@ -486,8 +486,8 @@
 						  <div class="ak-err-below"><div id="ak-fieldbox-ownership_type" class="input-select ak-input-type-user">
 								<label for="ak-ownership_type">Ownership Type</label>
 								<select id="ak-ownership_type" type="text" name="ownership_type">
-								   <option value="personal">personal</option>
-								   <option value="business">business</option>
+								   <option value="personal">Personal</option>
+								   <option value="business">Business</option>
 								</select>
 						  </div></div> <!-- /ak-fieldbox-ownership_type /ak-err-below -->
 						
@@ -496,7 +496,7 @@
 								<input id="ak-business_name" type="text" name="business_name">
 						  </div></div> <!-- /ak-fieldbox-business_name /ak-err-below -->
 						
-						  <div id="ak-fieldbox-mandate"><div id="ak-mandate">By clicking "Donate", I authorize Braintree, a service of PayPal, on behalf of <span id="ak-client-name">{% filter ak_text:"org_name" %}{% client_name %}{% endfilter %}</span> (i) to verify my bank account information using bank information and consumer reports and (ii) to debit my bank account.
+						  <div id="ak-fieldbox-mandate"><div id="ak-mandate" class="text-small">By clicking "Donate", I authorize Braintree, a service of PayPal, on behalf of <span id="ak-client-name">{% filter ak_text:"org_name" %}{% client_name %}{% endfilter %}</span> (i) to verify my bank account information using bank information and consumer reports and (ii) to debit my bank account.
 							</div></div> <!-- /ak-mandate /ak-fieldbox-mandate -->     
 						</div> <!-- /ach_payment_options -->
           {% endif %}
