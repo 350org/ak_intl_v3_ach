@@ -445,11 +445,12 @@
 					<h5 class="margin-bottom-normal">{% filter ak_text:"donate_payment_information" %}Payment Information{% endfilter %}</h5>
 
 					{% if page.accept_ach %}
-            <div class="input-text ak-input-type-user c5 ct5 margin-top-none">
+
+            <div class="input-text ak-input-type-user">
                 <label for="id_first_name">{% filter ak_text:"field_first_name" %}First Name{% endfilter %}</label>
                 <input id="id_first_name" type="text" name="first_name">
             </div>
-            <div class="input-text ak-input-type-user c5 ct5 margin-top-none">
+            <div class="input-text ak-input-type-user">
                 <label for="id_last_name">{% filter ak_text:"field_last_name" %}Last Name{% endfilter %}</label>
                 <input id="id_last_name" type="text" name="last_name">
             </div>
