@@ -443,10 +443,88 @@
 
         <div class="ak-donate-area-step-3 form-style-labelabove ak-errs-below">
 					<h5 class="margin-bottom-normal">{% filter ak_text:"donate_payment_information" %}Payment Information{% endfilter %}</h5>
-					<div class="input-text ak-input-type-user">
-						<label for="id_name">{% filter ak_text:"field_name" %}Name{% endfilter %}</label>
-						<input id="id_name" class="ak-input-type-user" type="text" name="name">
-					</div>
+
+					{% if page.accept_ach %}
+            <div class="input-text ak-input-type-user c5 ct5 margin-top-none">
+                <label for="id_first_name">{% filter ak_text:"field_first_name" %}First Name{% endfilter %}</label>
+                <input id="id_first_name" type="text" name="first_name">
+            </div>
+            <div class="input-text ak-input-type-user c5 ct5 margin-top-none">
+                <label for="id_last_name">{% filter ak_text:"field_last_name" %}Last Name{% endfilter %}</label>
+                <input id="id_last_name" type="text" name="last_name">
+            </div>
+          {% else %}
+            <div class="input-text ak-input-type-user">
+              <label for="id_name">{% filter ak_text:"field_name" %}Name{% endfilter %}</label>
+              <input id="id_name" class="ak-input-type-user" type="text" name="name">
+            </div>
+          {% endif %}
+
+					{% if page.accept_ach %}
+	          <div class="ach_payment_options">
+	
+	               <div id="ak-fieldbox-ach_method">
+	                 <hr>
+	                 <h4>US Bank Transfer</h4>
+	                 <input type="radio" id="ak_ach_method_account_number" name="ach_method" value="account_number" checked>
+	                 <label for="ak_ach_method_account_number">Account Number</label>
+	                 <br>
+	                 <input type="radio" id="ak_ach_method_bank_login" name="ach_method" value="bank_login">
+	                 <label for="ak_ach_method_bank_login">Bank Login</label>
+	               </div>
+	
+	            <div class="account_number_options">
+	              <div class="ak-err-below">
+	                   <div id="ak-fieldbox-routing_number">
+	                       <label for="ak-routing_number">Routing Number</label>
+	                       <input id="ak-routing_number" type="text" name="routing_number" size="9">
+	                   </div>
+	              </div>
+	
+	               <div class="ak-err-below">
+	                   <div id="ak-fieldbox-bank_account">
+	                       <label for="ak-bank_account">Bank Account</label>
+	                       <input id="ak-bank_account" type="text" name="bank_account" size="17">
+	                   </div>
+	               </div>
+	
+	               <div class="ak-err-below">
+	                   <div id="ak-fieldbox-account_type">
+	                       <label for="ak-account_type">Account Type</label>
+	                       <select id="ak-account_type" type="text" name="account_type">
+	                           <option value="checking">checking</option>
+	                           <option value="savings">savings</option>
+	                       </select>
+	                   </div>
+	               </div>
+	             </div>
+	
+	               <div class="ak-err-below">
+	              <div id="ak-fieldbox-ownership_type">
+	                       <label for="ak-ownership_type">Ownership Type</label>
+	                       <select id="ak-ownership_type" type="text" name="ownership_type">
+	                           <option value="personal">personal</option>
+	                           <option value="business">business</option>
+	                       </select>
+	                   </div>
+	               </div>
+	
+	               <div class="ak-err-below">
+	                   <div id="ak-fieldbox-business_name">
+	                       <label for="ak-business_name">Business Name</label>
+	                       <input id="ak-business_name" type="text" name="business_name">
+	                   </div>
+	               </div>
+	
+	               <div id="ak-fieldbox-mandate">
+	                 <div id="ak-mandate">By clicking "Donate", I authorize Braintree, a service of PayPal, on behalf of <span id="ak-client-name">{% filter ak_text:"org_name" %}{% client_name %}{% endfilter %}</span> (i) to verify my bank account information using bank information and consumer reports and (ii) to debit my bank account.</div>
+	               </div>
+	          </div>
+	          </div>
+          {% endif %}
+
+
+<!-- CC stuff to take out ->
           <div id="ak-fieldbox-card_num" class="input-text ak-input-type-user">
 				    <label for="ak-card_num">{% filter ak_text:"field_card_num" %}Credit Card #{% endfilter %}</label>
 				    <input type="hidden" name="required" value="card_num" id="ak-card_num-required">
@@ -489,6 +567,9 @@
 			        <div id="ak-card_code-hosted" class="hosted-field"></div>
 			        <input id="ak-card_code" type="text" name="card_code" size="4">
 				    </div>
+<!-- end CC stuff -->				    
+
+
 				    <div class="clear"></div>
 					</div>
         </div><!--ak-styled-fields-->
