@@ -1044,8 +1044,7 @@ etc
                            "privacy"
                            {% if has_candidates %},"action_employer", "action_occupation"{% endif %}];
       } else {
-        validate_fields = ["card_num", "card_code", "first_name", "last_name", "name",
-                           "exp_date_year", "exp_date_month", "exp_date"];
+        validate_fields = ["first_name", "last_name"];
       }
 
       doing_step_validation = true;
