@@ -1106,20 +1106,6 @@ etc
                 }
             }
 
-        } else {
-            if (!do_validate_credit_card()) {
-                return step_has_errors;
-            }
-
-            if (!valid_credit_card($('#ak-card_num').val())) {
-                actionkit.errors['card_num:invalid'] = actionkit.forms.errorMessage('card_num:invalid');
-                step_has_errors = true;
-            }
-
-            if (!valid_credit_card_code($('#ak-card_code').val())) {
-                actionkit.errors['card_code:invalid'] = actionkit.forms.errorMessage('card_code:invalid');
-                step_has_errors = true;
-            }
         }
 
         if (step_has_errors) {
