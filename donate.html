@@ -445,11 +445,11 @@
 					<h5 class="margin-bottom-normal">{% filter ak_text:"donate_payment_information" %}Payment Information{% endfilter %}</h5>
 <!--
 TODO: https://act.350.org/docs/manual/guide/ach.html#updating-your-donation-templates
--string-ify (maybe?)
--hook up JS
 xpayment_method
 xach_method
 xstep_3_validation
+- try to break it
+- do we need translations?
 etc
 -->
 
@@ -1065,13 +1065,6 @@ etc
       }
     }
 
-    function do_validate_credit_card() {
-      if (actionkit.donations && actionkit.donations.skip_cc_validation) {
-        return false;
-      }
-      return true;
-    }
-
     function step_3_validation() {
         var step_has_errors = false;
         if (!actionkit.errors) {
@@ -1610,7 +1603,7 @@ $(function() {
         }
 
         switch (err.code) {
-            case 'HOSTED_FIELDS_FIELDS_EMPTY':
+          case 'HOSTED_FIELDS_FIELDS_EMPTY':
                 actionkit.errors['card_num:invalid'] = "Credit card fields are empty.";
                 break;
           case 'HOSTED_FIELDS_FIELDS_INVALID':
