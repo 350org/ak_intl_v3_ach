@@ -445,16 +445,17 @@
 					<h5 class="margin-bottom-normal">{% filter ak_text:"donate_payment_information" %}Payment Information{% endfilter %}</h5>
 <!--
 TODO: https://act.350.org/docs/manual/guide/ach.html#updating-your-donation-templates
--string-ify
+-string-ify (maybe?)
 -hook up JS
--payment_method
--ach_method
--step_3_validation
+xpayment_method
+xach_method
+xstep_3_validation
 etc
 -->
 
 					{% if page.accept_ach %}
-
+						<input type="hidden" name="payment_method" value="ach">
+						<input type="hidden" name="ach_method" value="account_number"> <!-- don't actually need this as it will default to ach if no other option is passed in, but just to be safe -->
             <div class="input-text ak-input-type-user">
                 <label for="id_first_name">{% filter ak_text:"field_first_name" %}First Name{% endfilter %}</label>
                 <input id="id_first_name" type="text" name="first_name">
@@ -1072,31 +1073,60 @@ etc
     }
 
     function step_3_validation() {
-      var step_has_errors = false;
+        var step_has_errors = false;
+        if (!actionkit.errors) {
+            actionkit.errors = {};
+        }
 
-      if (!do_validate_credit_card()) {
+        var payment_method = actionkit.form["payment_method"] && actionkit.form["payment_method"].value;
+        if (payment_method == 'ach') {
+            if ($('#ak-ownership_type').val() == 'business') {
+                if (!$('#ak-business_name').val()) {
+                    actionkit.errors['business_name:missing'] = actionkit.forms.errorMessage('business_name:missing');
+                    step_has_errors = true;
+                }
+            }
+            var ach_method = actionkit.form["ach_method"] && actionkit.form["ach_method"].value;
+            if (ach_method != 'bank_login') {
+                var bank_account = $('#ak-bank_account').val();
+                if (!bank_account) {
+                    actionkit.errors['bank_account:missing'] = actionkit.forms.errorMessage('bank_account:missing');
+                    step_has_errors = true;
+                } else if (!valid_bank_account_number(bank_account)) {
+                    actionkit.errors['bank_account:invalid'] = actionkit.forms.errorMessage('bank_account:invalid');
+                    step_has_errors = true;
+                }
+                var routing_number = $('#ak-routing_number').val();
+                if (!routing_number) {
+                    actionkit.errors['routing_number:missing'] = actionkit.forms.errorMessage('routing_number:missing');
+                    step_has_errors = true;
+                } else if (!valid_bank_routing_number(routing_number)) {
+                    actionkit.errors['routing_number:invalid'] = actionkit.forms.errorMessage('routing_number:invalid');
+                    step_has_errors = true;
+                }
+            }
+
+        } else {
+            if (!do_validate_credit_card()) {
+                return step_has_errors;
+            }
+
+            if (!valid_credit_card($('#ak-card_num').val())) {
+                actionkit.errors['card_num:invalid'] = actionkit.forms.errorMessage('card_num:invalid');
+                step_has_errors = true;
+            }
+
+            if (!valid_credit_card_code($('#ak-card_code').val())) {
+                actionkit.errors['card_code:invalid'] = actionkit.forms.errorMessage('card_code:invalid');
+                step_has_errors = true;
+            }
+        }
+
+        if (step_has_errors) {
+            actionkit.forms.onValidationErrors(actionkit.errors);
+        }
+
         return step_has_errors;
-      }
-
-      if (!valid_credit_card($('#ak-card_num').val())) {
-        if (!actionkit.errors){
-          actionkit.errors = {};
-				}
-        actionkit.errors['card_num:invalid'] = actionkit.forms.errorMessage('card_num:invalid');
-        actionkit.forms.onValidationErrors(actionkit.errors);
-        step_has_errors = true;
-      }
-
-      if (!valid_credit_card_code($('#ak-card_code').val())) {
-        if (!actionkit.errors){
-          actionkit.errors = {};
-				}
-        actionkit.errors['card_code:invalid'] = actionkit.forms.errorMessage('card_code:invalid');
-        actionkit.forms.onValidationErrors(actionkit.errors);
-        step_has_errors = true;
-      }
-
-      return step_has_errors;
     }
 
     function step_2_validation() {
@@ -1378,6 +1408,27 @@ etc
         }
         return false;
     }
+    
+    function valid_bank_account_number(value) {
+        return /^\d{4,17}$/.test(value);
+    }
+
+    function valid_bank_routing_number(value) {
+        value = value.replace(/\D/g,'');
+
+        if (value.length != 9) { return false; }
+
+        var checksum = 0;
+        for (var i = 0; i < value.length; i += 3) {
+            checksum += parseInt(value.charAt(i), 10) * 3
+                     +  parseInt(value.charAt(i + 1), 10) * 7
+                     +  parseInt(value.charAt(i + 2), 10);
+        }
+
+        if (checksum == 0 || checksum % 10 != 0) { return false; }
+
+        return true;
+    }
 
     // not 100% the same as Django but pretty close
     var email_regExp = /^\s*((([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+(\.([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+)*)|((\x22)((((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(([\x01-\x08\x0b\x0c\x0e-\x1f\x7f]|\x21|[\x23-\x5b]|[\x5d-\x7e]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(\\([\x01-\x09\x0b\x0c\x0d-\x7f]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))))*(((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(\x22)))@((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\s*$/i;
@@ -1551,7 +1602,8 @@ $(function() {
             submitOnEmpty: function() {
                 return $('#ak-pay-by-paypal').val() == 1;
             },
-            submit: form.querySelector(".ak-submit-button")
+            submit: form.querySelector(".ak-submit-button"),
+            {% if page.accept_ach %}ach: true,{% endif %}
         },
         toRemove = ["#ak-card_num", "#ak-card_code", "#ak-exp_date_month",
                     "#ak-exp_date_year", "#ak-card_num-required",
