@@ -452,7 +452,11 @@ xstep_3_validation
 - do we need translations?
 etc
 -->
-
+<div style="display: none">
+<div id="ak-card_num-hosted"></div>
+<div id="ak-card_code-hosted"></div>
+<div id="ak-exp_date-hosted"></div>
+</div>
 					{% if page.accept_ach %}
 						<input type="hidden" name="payment_method" value="ach">
 						<input type="hidden" name="ach_method" value="account_number"> <!-- don't actually need this as it will default to ach if no other option is passed in, but just to be safe -->
