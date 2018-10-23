@@ -1418,8 +1418,6 @@ etc
         return email_regExp.test(email);
     }
 
-    {% if show_paypal %}
-
     function submit_paypal() {
         {% if page.paypal_user_requirements != "none" %}
             {% if page.paypal_user_requirements == "email" %}
